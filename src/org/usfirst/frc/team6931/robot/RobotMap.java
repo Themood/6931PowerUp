@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc.team4183.robot;
+package org.usfirst.frc.team6931.robot;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -23,4 +23,10 @@ public class RobotMap {
 	// number and the module. For example you with a rangefinder:
 	// public static int rangefinderPort = 1;
 	// public static int rangefinderModule = 1;
+	public static int LEFTMOTOR1 = 1;
+	public static int LEFTMOTOR2 = 2;
+	public static int RIGHTMOTOR1 = 3;
+	public static int RIGHTMOTOR2 = 4;
+	public static int WINCHMOTOR1 = 5;
+	public static int WINCHMOTOR2 = 6;
 }
