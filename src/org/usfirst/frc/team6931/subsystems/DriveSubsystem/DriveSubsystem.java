@@ -8,10 +8,11 @@
 package org.usfirst.frc.team6931.subsystems.DriveSubsystem;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-
 import org.usfirst.frc.team6931.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
@@ -24,12 +25,18 @@ public class DriveSubsystem extends Subsystem {
 	public final Spark rightfrontmotor;
 	public final Spark rightbackmotor;
 	
-	
+	DifferentialDrive robotdrive;
+	SpeedControllerGroup left;
+	SpeedControllerGroup right;
 	public DriveSubsystem() {
 		rightbackmotor = new Spark(RobotMap.RIGHTMOTOR2);
 		rightfrontmotor = new Spark(RobotMap.RIGHTMOTOR1);
 		leftbackmotor = new Spark(RobotMap.LEFTMOTOR2);
 		leftfrontmotor = new Spark(RobotMap.LEFTMOTOR1);
+		left = new SpeedControllerGroup(leftbackmotor, leftfrontmotor);
+		right = new SpeedControllerGroup(rightfrontmotor, rightbackmotor);
+		
+		robotdrive = new DifferentialDrive(left, right);  
 		
 	}
 		
