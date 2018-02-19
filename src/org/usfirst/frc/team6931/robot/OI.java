@@ -6,7 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package org.usfirst.frc.team6931.robot;
-
+import org.usfirst.frc.team6931.utils.F310Constants;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -16,16 +16,15 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	Joystick leftJoy = new Joystick(1);
-	Button button1 = new JoystickButton(leftJoy, 1),
-			button2 = new JoystickButton(leftJoy, 2),
-			button3 = new JoystickButton(leftJoy, 3),
-			button4 = new JoystickButton(leftJoy, 4),
-			button5 = new JoystickButton(leftJoy, 5),
-			button6 = new JoystickButton(leftJoy, 6),
-			button7 = new JoystickButton(leftJoy, 7),
-			button8 = new JoystickButton(leftJoy, 8);
+	public static Joystick Drive = new Joystick(0);
+	public static double SpeedAxis = Drive.getRawAxis(F310Constants.LX);
+	public static double TurnAxis = Drive.getRawAxis(F310Constants.RY);
+	
+	
 
+	}
+					
+													;
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a
 	//// joystick.
@@ -53,4 +52,4 @@ public class OI {
 	// Start the command when the button is released and let it run the command
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
-}
+

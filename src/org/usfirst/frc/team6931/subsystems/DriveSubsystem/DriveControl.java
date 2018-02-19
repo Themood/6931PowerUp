@@ -8,16 +8,16 @@
 package org.usfirst.frc.team6931.subsystems.DriveSubsystem;
 
 import org.usfirst.frc.team6931.robot.Robot;
-import org.usfirst.frc.team6931.utils.CommandUtils;
-
+import org.usfirst.frc.team6931.robot.OI;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class Idle extends Command {
-	public Idle() {
+public class DriveControl extends Command {
+	public DriveControl() {
 		// Use requires() here to declare subsystem dependencies
+		//requires(Robot.kExampleSubsystem);
 		requires(Robot.driveSubsystem);
 	}
 
@@ -29,14 +29,15 @@ public class Idle extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		DriveSubsystem.acardeDrive(OI.SpeedAxis, OI.TurnAxis);
+
 	}
+
+
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		if(Robot.runMode == Robot.RunMode.TELEOP) {
-			return CommandUtils.stateChange(this, new DriveControl());
-		}
 		return false;
 	}
 

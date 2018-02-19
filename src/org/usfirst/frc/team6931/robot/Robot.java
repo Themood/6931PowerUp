@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team6931.robot;
 
+
 import org.usfirst.frc.team6931.subsystems.DriveSubsystem.DriveSubsystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -27,7 +28,10 @@ public class Robot extends IterativeRobot {
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	public static  DriveSubsystem driveSubsystem;
 
-
+	public enum RunMode { DISABLED, AUTO, TELEOP, TEST };
+	public static RunMode runMode = RunMode.DISABLED;
+	public static RunMode lastState = runMode;
+	//Shoutout to 4183 for me stealing their public domain code!
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -53,6 +57,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		runMode = RunMode.AUTO;
 		m_autoSelected = m_chooser.getSelected();
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
@@ -78,6 +83,9 @@ public class Robot extends IterativeRobot {
 	/**
 	 * This function is called periodically during operator control.
 	 */
+	public void telopInit() {
+		runMode = RunMode.TELEOP;
+	}
 	@Override
 	public void teleopPeriodic() {
 	}
@@ -85,6 +93,9 @@ public class Robot extends IterativeRobot {
 	/**
 	 * This function is called periodically during test mode.
 	 */
+	public void testInit() {
+		runMode = RunMode.TEST;
+	}
 	@Override
 	public void testPeriodic() {
 	}

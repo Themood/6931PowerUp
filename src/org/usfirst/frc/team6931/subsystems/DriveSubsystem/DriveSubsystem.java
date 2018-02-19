@@ -33,18 +33,30 @@ public class DriveSubsystem extends Subsystem {
 		rightfrontmotor = new Spark(RobotMap.RIGHTMOTOR1);
 		leftbackmotor = new Spark(RobotMap.LEFTMOTOR2);
 		leftfrontmotor = new Spark(RobotMap.LEFTMOTOR1);
+		
+		leftfrontmotor.setInverted(false);
+		leftbackmotor.setInverted(false);
+		rightfrontmotor.setInverted(true);
+		rightbackmotor.setInverted(true);
+		
 		left = new SpeedControllerGroup(leftbackmotor, leftfrontmotor);
 		right = new SpeedControllerGroup(rightfrontmotor, rightbackmotor);
 		
 		robotdrive = new DifferentialDrive(left, right);  
 		
 	}
-		
+	
 		
 	
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
+		setDefaultCommand(new Idle());
+		
+	}
+	public static void acardeDrive(double speed_stick, double turn_stick) {
+		
 		
 	}
 }
+
