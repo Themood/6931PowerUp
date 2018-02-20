@@ -1,12 +1,5 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package org.usfirst.frc.team6931.robot;
-import org.usfirst.frc.team6931.utils.F310Constants;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -16,40 +9,369 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	public static Joystick Drive = new Joystick(0);
-	public double SpeedAxis = Drive.getRawAxis(1);
-	public double TurnAxis = Drive.getRawAxis(4);
-	
-	
-
+	// lot of public domain code from 4183 im used to using 
+	// I'd honestly set up your own in the future
+	// Singleton method; use OI.instance() to get the OI instance.
+	// Should do this in Robot.robotInit().
+	private static OI inst;
+	public static OI instance() {
+		if(inst == null)
+			inst = new OI();
+		return inst;		
 	}
-					
-													;
-	//// CREATING BUTTONS
-	// One type of button is a joystick button which is any button on a
-	//// joystick.
-	// You create one by telling it which joystick it's on and which button
-	// number it is.
-	// Joystick stick = new Joystick(port);
-	// Button button = new JoystickButton(stick, buttonNumber);
+	
+	// Call on entry to Autonomous Mode to set up the Soft Buttons
+	public void autonomousInit() {
+		doAutonomousMapping();
+	}
+	
+	public enum Driver {
+		DEFAULT, JOE, SAM;  // TODO Put in actual names, add more as needed
+	}
+	
+	public enum Operator {
+		DEFAULT, BILL, MIKE;  // TODO Put in actual names, add more as needed
+	}
+	
+	public void teleopInit( Driver driver, Operator operator) {
+		
+		// Begin by setting defaults
+		doDefaultMapping();
+		
+		// Override default mappings for particular driver.
+		// Make sure to pass driverController!
+		switch(driver) {
+		case JOE:
+			mapDriver_Joe( driverController);
+			break;
+		case SAM:
+			// Currently no remapping for Sam
+			break;
+		case DEFAULT:
+			break;
+		}
+		
+		// Override default mappings for particular operator
+		// Make sure to pass operatorController!
+		switch(operator) {
+		case BILL:
+			mapOperator_Bill( operatorController);
+			break;
+		case MIKE:
+			// Currently no remapping for Mike
+			break;
+		case DEFAULT:
+			break;
+		}		
+	}
 
-	// There are a few additional built in buttons you can use. Additionally,
-	// by subclassing Button you can create custom triggers and bind those to
-	// commands the same as any other Button.
+	public void teleopInit() {
+		teleopInit(Driver.DEFAULT, Operator.DEFAULT);
+	}
+	
+	/**
+	 * If your Command needs rising or falling edge detect on a button,
+	 * use this method to get a ButtonEvent for that purpose.
+	 * In initialize(), get your ButtonEvent: OI.ButtonEvent btnShoot = OI.getBtnEvt( OI.btnShoot).
+	 * In isFinished(), test the ButtonEven: btnShoot.onPressed() or btnShoot.onReleased().
+	 * 
+	 * @param btn The Logical button 
+	 * @return The ButtonEvent that wraps the button
+	 */
+	public static ButtonEvent getBtnEvt( LogicalButton btn) { return new ButtonEvent(btn); }
 
-	//// TRIGGERING COMMANDS WITH BUTTONS
-	// Once you have a button, it's trivial to bind it to a button in one of
-	// three ways:
+	
+	//****************************
+	// LOGICAL BUTTON DEFINITIONS
+	//****************************
 
-	// Start the command when the button is pressed and let it run the command
-	// until it is finished as determined by it's isFinished method.
-	// button.whenPressed(new ExampleCommand());
+	//public static LogicalButton btnexample;
+	
+	
+	
+	//****************************
+	// LOGICAL AXIS DEFINITIONS
+	//****************************
+	public static LogicalAxis axisForward;
+	public static LogicalAxis axisTurn;
 
-	// Run the command while the button is being held down and interrupt it once
-	// the button is released.
-	// button.whileHeld(new ExampleCommand());
+	
 
-	// Start the command when the button is released and let it run the command
-	// until it is finished as determined by it's isFinished method.
-	// button.whenReleased(new ExampleCommand());
+	// End of public interface
+
+	
+
+	private PhysicalController driverController, operatorController;
+
+	// Private so nobody can instantiate class OI directly - 
+	// forced to use instance().
+	private OI() {
+		driverController = new PhysicalController( new Joystick(0));
+		operatorController = new PhysicalController( new Joystick(1));
+		
+		// Set default mapping
+		doDefaultMapping();		
+	}
+	
+	// Person-specific mapping functions.
+	// Override Defaults here.
+	
+	// Example: remap driver controller for Joe as driver
+	// TODO: change name of method for real driver name,
+	// and of course put in actual desired mapping
+	private void mapDriver_Joe( PhysicalController controller) {
+	}
+	
+	// Example: remap operator controller for Mike as operator
+	// TODO: change name of method for real operator name,
+	// and of course put in actual desired mapping
+	private void mapOperator_Bill( PhysicalController controller) {
+	}
+	
+	
+	// Mapping of Soft(ware) button/axis to Logical buttons & axis
+	private void doAutonomousMapping() {
+		
+		// Assign to EVERY logical button a soft button
+	//	btnexample = new SoftButton();
+	
+		 		
+		
+		// Assign to EVERY logical axis a soft axis
+		axisForward = new SoftAxis();
+		axisTurn = new SoftAxis();
+	}
+	
+	// Default mapping of Physical to Logical button, axis
+	private void doDefaultMapping() {
+		
+		// Assign to EVERY logical button a physical button
+		// Assign to EVERY logical axis a physical axis
+
+		// ****************
+		// DRIVER CONTROLS Logical <- Physical
+		// ****************
+	//	btnexample = driverController.bCross;
+		
+		
+		// ****************
+		// OPERATOR CONTROLS Logical <- Physical
+		
+				
+		
+		axisForward = driverController.aLeftY;
+		axisTurn = driverController.aRightX;		
+	}
+
+	// Represents the physical buttons & axis on one controller
+	private static class PhysicalController {
+
+		@SuppressWarnings("unused")
+		private final PhysicalButton 
+			bX, bY, bA,  bB, 
+			bL1, bR1, //bL2, bR2,
+			bStart, bBack, bLstick, bRstick;
+		
+		@SuppressWarnings("unused")
+		private final PhysicalPovButton
+			bPovUp, bPovRight, bPovDown, bPovLeft;
+
+		@SuppressWarnings("unused")
+		private final PhysicalAxis 
+			aLeftX, aLeftY, aRightX, aRightY; //aL2, aR2;
+		
+		private PhysicalController( Joystick controller) {
+			bX = new PhysicalButton(controller, F310Constants.F310X.getValue());
+			bY = new PhysicalButton(controller, F310Constants.F310Y.getValue());
+			bA = new PhysicalButton(controller, F310Constants.F310A.getValue());
+			bB = new PhysicalButton(controller,F310Constants.F310B.getValue());
+			bL1 = new PhysicalButton(controller,F310Constants.F310LB.getValue());
+			bR1 = new PhysicalButton(controller, F310Constants.F310RB.getValue());
+			//bL2 = new PhysicalButton(controller, F310Constants.F310X.getValue());
+			//bR2 = new PhysicalButton(controller, F310Constants.F310X.getValue());
+			bStart = new PhysicalButton(controller, F310Constants.F310START.getValue());
+			bBack = new PhysicalButton(controller, F310Constants.F310BACK.getValue());
+			bLstick = new PhysicalButton(controller, F310Constants.F310L_STICK.getValue());
+			bRstick = new PhysicalButton(controller, F310Constants.F310R_STICK.getValue());
+			bPovUp = new PhysicalPovButton(controller, PhysicalPovButton.POV_BUTTON.UP);
+			bPovRight = new PhysicalPovButton(controller, PhysicalPovButton.POV_BUTTON.RIGHT);
+			bPovDown = new PhysicalPovButton(controller, PhysicalPovButton.POV_BUTTON.DOWN);
+			bPovLeft = new PhysicalPovButton(controller, PhysicalPovButton.POV_BUTTON.LEFT);
+
+			aLeftX = new PhysicalAxis( controller,F310Constants.LX.getValue(), false);
+			aLeftY = new PhysicalAxis( controller, F310Constants.LY.getValue(), true);
+			aRightX = new PhysicalAxis( controller, F310Constants.RX.getValue(), false);
+			aRightY = new PhysicalAxis( controller, F310Constants.RY.getValue(), true);
+			//aL2 = new PhysicalAxis( controller, F310Constants.F310X.getValue(), false);
+			//aR2 = new PhysicalAxis( controller, F310Constants.F310X.getValue(), false);
+		}
+	}
+
+	// Represents a generic button
+	public static interface LogicalButton {
+		public boolean get();
+		public default void push() {}
+		public default void release() {}
+		public default void hit() { hit(300); }
+		public default void hit( long msecs) {}
+	}
+	
+	// A button that can be operated by software
+	private static class SoftButton implements LogicalButton {
+		volatile boolean state = false;
+		@Override
+		public boolean get() { return state; }
+		@Override
+		public void push() { state = true; }
+		@Override
+		public void release() { state = false; }
+		@Override
+		public void hit( long msecs) {
+			// push() this, 
+			// then start a thread to release() after a short while
+			push();
+			new Thread() {
+				public void run() {
+					try {
+						Thread.sleep(msecs);
+					} catch (InterruptedException e) {}
+					release();
+				}
+			}.start();
+		}
+	}
+	
+	// A button on a controller
+	private static class PhysicalButton implements LogicalButton {
+		Button btn;
+		private PhysicalButton( Joystick controller, int btnNum) { 
+			btn = new JoystickButton( controller, btnNum); 
+		}		
+		private PhysicalButton( Button btn) {
+			this.btn = btn;
+		}
+		@Override
+		public boolean get() { return btn.get(); }
+		
+	}
+	
+	// Allows you to use a controller axis as a button
+	// Not used yet
+	@SuppressWarnings("unused")
+	private static class PhysicalAxisButton implements LogicalButton {
+		private PhysicalAxis physAxis;
+		private PhysicalAxisButton( Joystick controller, int axisNum, boolean invert) {
+			physAxis = new PhysicalAxis( controller, axisNum, invert);
+		}
+		@Override
+		public boolean get() { return physAxis.get() > 0.5; }
+	}
+	
+	// Allows you to use a POV button as a button
+	private static class PhysicalPovButton implements LogicalButton {		
+		private Joystick controller;
+		private POV_BUTTON whichPov;
+		
+		private enum POV_BUTTON { 
+			UP(0), RIGHT(90), DOWN(180), LEFT(270);
+			private int value;
+			private POV_BUTTON(int value) {
+				this.value = value;
+			}
+			private int getValue() { return value; }
+		}
+		
+		private PhysicalPovButton( Joystick controller, POV_BUTTON whichPov) {
+			this.controller = controller;
+			this.whichPov = whichPov;
+		}
+		
+		@Override
+		public boolean get() { return controller.getPOV() == whichPov.getValue(); }		
+	}
+	
+	// Wraps a LogicalButton & makes it easy to catch rising/falling edges
+	public static class ButtonEvent {
+
+		private final LogicalButton m_button;
+		private boolean m_wasPressed;
+
+		private ButtonEvent( LogicalButton button) {
+			m_button = button;
+			m_wasPressed = isPressed();
+		}
+
+		/**
+		 * Returns true if the button is currently pressed
+		 */
+		public boolean isPressed() { return m_button.get(); }
+
+		/**
+		 * Returns true only once when the button is pressed
+		 * (rising edge detect)
+		 */
+		public boolean onPressed() {	
+			boolean rtn = false;
+
+			boolean isPressedNow = isPressed();
+			if( isPressedNow && !m_wasPressed)
+				rtn = true;
+
+			m_wasPressed = isPressedNow;
+			return rtn;
+		}
+
+		/**
+		 * Returns true only once when the button is released
+		 * (falling edge detect)
+		 */
+		public boolean onReleased() {
+			boolean rtn = false;
+
+			boolean isPressedNow = isPressed();
+			if( !isPressedNow && m_wasPressed)
+				rtn = true;
+
+			m_wasPressed = isPressedNow;
+			return rtn;		
+		}
+	}
+	
+	
+	// Represents a generic Axis
+	public static interface LogicalAxis {
+		public double get();
+		public default void set( double value) {}
+	}
+	
+	// An Axis that can be operated by software
+	private static class SoftAxis implements LogicalAxis {
+		volatile double value = 0;
+		@Override
+		public double get() { return value; }
+		@Override
+		public void set( double value) { this.value = value; }
+	}
+	
+	
+	// An Axis on a controller
+	private static class PhysicalAxis implements LogicalAxis {
+		Joystick controller;
+		int axisNum;
+		boolean invert;
+		protected PhysicalAxis( Joystick controller, int axisNum, boolean invert) {
+			this.controller = controller;
+			this.axisNum = axisNum;
+			this.invert = invert;
+		}
+
+		@Override
+		public double get() {
+			return (invert ? -1.0 : 1.0 ) * controller.getRawAxis(axisNum);
+		}
+	}
+
+}
+
+
 

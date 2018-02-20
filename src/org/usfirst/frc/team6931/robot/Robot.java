@@ -8,6 +8,7 @@
 package org.usfirst.frc.team6931.robot;
 
 
+import org.usfirst.frc.team6931.robot.OI;
 import org.usfirst.frc.team6931.subsystems.DriveSubsystem.DriveSubsystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -30,16 +31,19 @@ public class Robot extends IterativeRobot {
 	public enum RunMode { DISABLED, AUTO, TELEOP, TEST };
 	public static RunMode runMode = RunMode.DISABLED;
 	public static RunMode lastState = runMode;
+	public static OI oi;
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
+		oi = OI.instance();
 		m_chooser.addDefault("Default Auto", kDefaultAuto);
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
 		driveSubsystem = new DriveSubsystem();
+		
 		
 	
 	}
