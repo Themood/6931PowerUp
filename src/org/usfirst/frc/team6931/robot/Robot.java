@@ -26,12 +26,10 @@ public class Robot extends IterativeRobot {
 	private static final String kCustomAuto = "My Auto";
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
-	public static  DriveSubsystem driveSubsystem;
-
+	public static  DriveSubsystem driveSubsystem; 
 	public enum RunMode { DISABLED, AUTO, TELEOP, TEST };
 	public static RunMode runMode = RunMode.DISABLED;
 	public static RunMode lastState = runMode;
-	//Shoutout to 4183 for me stealing their public domain code!
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -42,6 +40,8 @@ public class Robot extends IterativeRobot {
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
 		driveSubsystem = new DriveSubsystem();
+		
+	
 	}
 		
 	/**

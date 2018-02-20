@@ -29,7 +29,7 @@ public class DriveControl extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		DriveSubsystem.acardeDrive(OI.SpeedAxis, OI.TurnAxis);
+		DriveSubsystem.acardeDrive(OI.Drive.getX(), OI.Drive.getX());
 
 	}
 

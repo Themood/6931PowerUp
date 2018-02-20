@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {
 	public static Joystick Drive = new Joystick(0);
-	public static double SpeedAxis = Drive.getRawAxis(F310Constants.LX);
-	public static double TurnAxis = Drive.getRawAxis(F310Constants.RY);
+	public static double SpeedAxis = Drive.getRawAxis(F310Constants.LY);
+	public static double TurnAxis = Drive.getRawAxis(F310Constants.RX);
 	
 	
 

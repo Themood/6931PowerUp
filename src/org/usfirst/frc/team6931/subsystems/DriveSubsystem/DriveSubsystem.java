@@ -41,12 +41,12 @@ public class DriveSubsystem extends Subsystem {
 		
 		left = new SpeedControllerGroup(leftbackmotor, leftfrontmotor);
 		right = new SpeedControllerGroup(rightfrontmotor, rightbackmotor);
-		
+
 		robotdrive = new DifferentialDrive(left, right);  
-		
+		robotdrive.setSafetyEnabled(false);
 	}
 	
-		
+	
 	
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
