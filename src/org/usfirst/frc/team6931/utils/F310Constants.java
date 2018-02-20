@@ -6,7 +6,7 @@ package org.usfirst.frc.team6931.utils;
  */
 public class F310Constants {
 	
-		public static int F310A = 1,
+			int F310A = 1,
 				F310B = 2,
 				F310X = 	3,
 				F310Y = 4,
